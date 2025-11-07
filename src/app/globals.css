@@ -1,26 +1,241 @@
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&family=Space+Grotesk:wght@300..700&display=swap");
 @import "tailwindcss";
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --card: #f4f4f5;
+  --card-foreground: #111111;
+
+  --muted: #9ca3af;
+  --accent: #7bdff2;
+  --accent-foreground: #0f1014;
+
+  --font-red-hat-display: "Red Hat Display", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f1014; /* deep dark */
+    --foreground: #ececec;
+
+    --card: #181a1f;
+    --card-foreground: #ffffff;
+
+    --muted: #9ca3af;
+    --accent: #7bdff2;
+    --accent-foreground: #0f1014;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-muted: var(--muted);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 25px #1fb7d956;
+  }
+  25% {
+    box-shadow: 0 0 35px #7bdff256;
+  }
+  50% {
+    box-shadow: 0 0 25px #1fb7d956;
+  }
+  75% {
+    box-shadow: 0 0 35px #4acdff56;
+  }
+  100% {
+    box-shadow: 0 0 25px #1fb7d956;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-red-hat-display), sans-serif;
+}
+
+/* Animated gradient border with glow for buttons */
+.button-gradient-glow {
+  position: relative;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 0.125rem; /* matches rounded-sm */
+  background-color: transparent;
+  transition: background-color 300ms ease, box-shadow 400ms ease;
+  box-shadow: 0 0 0 rgba(31, 184, 217, 0);
+}
+
+/* Rotating conic-gradient border */
+.button-gradient-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px; /* border thickness */
+  border-radius: inherit;
+  background: conic-gradient(from 0deg, #5227ff, #1fb8d9, #7bdff2, #5227ff);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spin 4s linear infinite;
+  pointer-events: none;
+}
+
+/* Soft rotating outer glow */
+.button-gradient-glow::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: calc(0.125rem + 0.25rem);
+  background: conic-gradient(from 0deg, #5227ff, #1fb8d9, #7bdff2, #5227ff);
+  filter: blur(18px);
+  opacity: 0.24;
+  z-index: -1;
+  animation: spin 6s linear infinite;
+  pointer-events: none;
+}
+
+.button-gradient-glow:hover {
+  background-color: rgba(236, 236, 236, 0.06);
+  box-shadow: 0 0 24px rgba(31, 184, 217, 0.28), 0 0 48px rgba(82, 39, 255, 0.2);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes glowGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes nodeHover {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes glowIntensify {
+  0%,
+  100% {
+    opacity: 0.2;
+    filter: blur(20px);
+  }
+  50% {
+    opacity: 0.6;
+    filter: blur(22px);
+  }
+}
+
+@keyframes connectionPulse {
+  0%,
+  100% {
+    stroke-opacity: 0.4;
+  }
+  50% {
+    stroke-opacity: 0.8;
+  }
+}
+
+@keyframes nodeEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0) translateY(0);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.2) translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.main-container {
+  max-width: 1280px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  /* padding-left: 1.5rem;
+
+  padding-right: 1.5rem; */
 }
